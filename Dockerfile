@@ -1,18 +1,24 @@
-FROM node:18-alpine
+FROM node:18-alpine AS builder
+
+COPY package.json package-lock.json ./
+WORKDIR /app
+COPY . .
+RUN npm run build
+RUN npm run prune --production
+
+FROM node:18-alpine AS runner
 
 WORKDIR /app
 
-# Copia arquivos de dependências primeiro (para cache eficiente)
-COPY package.json package-lock.json ./
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/package-lock.json ./
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next.config.js ./
 
-# Instala dependências (incluindo opcionais)
-RUN npm install --include=optional
+RUN npm install --only=production
 
-# Copia o restante da aplicação
-COPY . .
+EXPOSE 3000
 
-# Constrói a aplicação Next.js
-RUN npm run build
-
-# Define o comando de inicialização
 CMD ["npm", "start"]

@@ -1,10 +1,7 @@
-**/node_modules
-**/.next
-**/.git
-.env*
+node_modules
+npm-debug.log
 Dockerfile
-docker-compose*.yml
+docker-compose.yaml
 .dockerignore
-**/README.md
-**/*.log
-**/dist
+.git
+.next

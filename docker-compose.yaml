@@ -2,13 +2,11 @@ version: '3.8'
 
 services:
   nextjs:
-    build: .
-    container_name: docker-next
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: curriculum-frontend
+    container_name: curriculum-frontend
     ports:
-      - '3000:3000'
-    environment:
-      - NODE_ENV=production
-    volumes:
-      - .:/app
-      - /app/.next
-      - /app/node_modules
+      - "3000:3000"
+    restart: unless-stopped
