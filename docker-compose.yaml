@@ -5,14 +5,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: meu-app-nextjs
-    container_name: meu-app-nextjs
+    container_name: docker-next
     ports:
-      - "3000:3000"
+      - '3000:3000'
     volumes:
       - .:/app
       - /app/node_modules
-    environment:
-      - NODE_ENV=development
-    working_dir: /app
-    command: npm run dev
