@@ -1,14 +1,18 @@
-
 FROM node:18-alpine
 
 WORKDIR /app
 
-COPY package.json ./
+# Copia arquivos de dependências primeiro (para cache eficiente)
+COPY package.json package-lock.json ./
 
-RUN npm install
+# Instala dependências (incluindo opcionais)
+RUN npm install --include=optional
 
+# Copia o restante da aplicação
 COPY . .
 
+# Constrói a aplicação Next.js
 RUN npm run build
 
-CMD ["npm", "run", "start"]
+# Define o comando de inicialização
+CMD ["npm", "start"]

@@ -2,12 +2,13 @@ version: '3.8'
 
 services:
   nextjs:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     container_name: docker-next
     ports:
       - '3000:3000'
+    environment:
+      - NODE_ENV=production
     volumes:
       - .:/app
+      - /app/.next
       - /app/node_modules
